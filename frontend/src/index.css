@@ -50,6 +50,27 @@ a {
   text-decoration: none;
 }
 
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .app-layout {
   min-height: 100svh;
   display: flex;
@@ -157,9 +178,8 @@ a {
   color: var(--text);
 }
 
-.home-topics__hint {
+.home-topics .empty-state {
   margin-bottom: 1rem;
-  font-size: 0.9375rem;
 }
 
 .home-topic-list {
@@ -344,8 +364,20 @@ a {
 }
 
 .empty-state__title {
+  margin: 0;
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--text-h);
+}
+
+.empty-state--error {
+  border-color: #fecaca;
+  background: var(--error-bg);
+}
+
+.empty-state--error .empty-state__title,
+.empty-state--error .empty-state__description {
+  color: var(--error);
 }
 
 .empty-state__description {
@@ -434,6 +466,14 @@ a {
   align-items: start;
 }
 
+.study-layout__body--single {
+  grid-template-columns: 1fr;
+}
+
+.study-layout__sidebar {
+  min-width: 0;
+}
+
 .study-layout__main {
   display: flex;
   flex-direction: column;
@@ -445,6 +485,17 @@ a {
 }
 
 .study-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.study-actions__hint {
+  font-size: 0.8125rem;
+  color: var(--text);
+}
+
+.study-actions__buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
@@ -543,16 +594,21 @@ a {
   word-break: break-word;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .study-card-inner,
-  .study-card--fade {
-    transition: none;
-  }
-}
-
 @media (max-width: 768px) {
+  .app-main {
+    padding: 1.25rem 1rem;
+  }
+
   .study-layout__body {
     grid-template-columns: 1fr;
+  }
+
+  .study-layout__sidebar {
+    order: 1;
+  }
+
+  .study-layout__main {
+    order: 0;
   }
 
   .study-layout__header {
@@ -565,8 +621,12 @@ a {
     justify-content: space-between;
   }
 
-  .study-actions .btn {
+  .study-actions__buttons .btn {
     flex: 1;
+  }
+
+  .home-random .btn {
+    width: 100%;
   }
 }
 
@@ -671,5 +731,11 @@ a {
 
   .app-nav {
     flex-wrap: wrap;
+  }
+
+  .topic-list__item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

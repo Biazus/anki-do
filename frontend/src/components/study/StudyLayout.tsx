@@ -23,21 +23,33 @@ export function StudyLayout({
       <header className="study-layout__header">
         <h1 className="study-layout__title">{title}</h1>
         <div className="study-layout__meta">
-          <span className="study-layout__progress" aria-live="polite">
+          <span
+            className="study-layout__progress"
+            aria-live="polite"
+            aria-label={`Progresso: ${progressLabel}`}
+          >
             {progressLabel}
           </span>
-          <Button type="button" variant="secondary" onClick={onExit} aria-label="Sair da sessão">
+          <Button type="button" variant="secondary" onClick={onExit} aria-label="Sair da sessão de estudo">
             Sair
           </Button>
         </div>
       </header>
 
-      <div className="study-layout__body">
+      <div
+        className={
+          extendedPanel
+            ? 'study-layout__body'
+            : 'study-layout__body study-layout__body--single'
+        }
+      >
         <div className="study-layout__main">
           <div className="study-layout__card-area">{card}</div>
           {actions}
         </div>
-        {extendedPanel}
+        {extendedPanel ? (
+          <div className="study-layout__sidebar">{extendedPanel}</div>
+        ) : null}
       </div>
     </div>
   )

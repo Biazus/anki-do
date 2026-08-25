@@ -2,6 +2,7 @@ import { Button } from '../ui/Button'
 
 interface ExtendedPanelProps {
   description: string
+  isFlipped: boolean
   isOpen: boolean
   canShow: boolean
   onToggle: () => void
@@ -9,16 +10,20 @@ interface ExtendedPanelProps {
 
 export function ExtendedPanel({
   description,
+  isFlipped,
   isOpen,
   canShow,
   onToggle,
 }: ExtendedPanelProps) {
-  if (!canShow) {
+  if (!isFlipped || !canShow) {
     return null
   }
 
   return (
-    <aside className={`extended-panel ${isOpen ? 'extended-panel--open' : ''}`}>
+    <aside
+      className={`extended-panel ${isOpen ? 'extended-panel--open' : ''}`}
+      aria-label="Descrição extendida"
+    >
       <Button
         type="button"
         variant="secondary"
@@ -26,6 +31,7 @@ export function ExtendedPanel({
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls="extended-panel-content"
+        aria-label={isOpen ? 'Ocultar descrição extendida' : 'Mostrar descrição extendida'}
       >
         {isOpen ? 'Ocultar detalhes' : 'Mostrar detalhes'}
       </Button>

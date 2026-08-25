@@ -5,6 +5,7 @@ import { fetchTopics } from '../api/topics'
 import { CardForm } from '../components/cards/CardForm'
 import { PageHeader } from '../components/layout/PageHeader'
 import { EmptyState } from '../components/ui/EmptyState'
+import { ErrorState } from '../components/ui/ErrorState'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import type { Topic } from '../types/topic'
 
@@ -39,14 +40,17 @@ export function CardNewPage() {
       />
 
       {loading ? <LoadingSpinner /> : null}
-      {error ? <p className="error-message">{error}</p> : null}
+
+      {error ? (
+        <ErrorState message={error} onRetry={loadTopics} />
+      ) : null}
 
       {!loading && !error && topics.length === 0 ? (
         <EmptyState
           title="Nenhum tópico disponível"
           description="Crie um tópico antes de cadastrar cards."
         >
-          <Link to="/topics" className="inline-link">
+          <Link to="/topics" className="btn btn--primary">
             Ir para Tópicos
           </Link>
         </EmptyState>

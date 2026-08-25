@@ -8,8 +8,8 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, description, children }: EmptyStateProps) {
   return (
-    <div className="empty-state">
-      <p className="empty-state__title">{title}</p>
+    <div className="empty-state" role="status">
+      <h2 className="empty-state__title">{title}</h2>
       {description ? <p className="empty-state__description">{description}</p> : null}
       {children ? <div className="empty-state__action">{children}</div> : null}
     </div>

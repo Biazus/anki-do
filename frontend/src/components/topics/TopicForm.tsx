@@ -65,7 +65,7 @@ export function TopicForm({ onCreated }: TopicFormProps) {
 
       {error ? <p className="error-message">{error}</p> : null}
 
-      <Button type="submit" disabled={!canSubmit}>
+      <Button type="submit" disabled={!canSubmit} aria-label="Criar novo tópico">
         {submitting ? 'Criando...' : 'Criar tópico'}
       </Button>
     </form>

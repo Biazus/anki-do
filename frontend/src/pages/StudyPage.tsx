@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { fetchTopics } from '../api/topics'
 import { ExtendedPanel } from '../components/study/ExtendedPanel'
 import { StudyActions } from '../components/study/StudyActions'
 import { StudyCard } from '../components/study/StudyCard'
 import { StudyLayout } from '../components/study/StudyLayout'
+import { ErrorState } from '../components/ui/ErrorState'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
+import { useStudyKeyboard } from '../hooks/useStudyKeyboard'
 import { useStudySession } from '../hooks/useStudySession'
 import type { StudyMode } from '../types/study'
 
@@ -30,6 +32,14 @@ function StudySessionView({ mode }: StudySessionViewProps) {
   const session = useStudySession({
     mode,
     onSessionEnd: () => navigate('/'),
+  })
+
+  useStudyKeyboard({
+    enabled: session.status === 'pending',
+    isFlipped: session.isFlipped,
+    onFlip: session.flip,
+    onNext: session.next,
+    onExit: session.exit,
   })
 
   useEffect(() => {
@@ -77,7 +87,13 @@ function StudySessionView({ mode }: StudySessionViewProps) {
   }
 
   if (session.status === 'error') {
-    return <p className="error-message">{session.error}</p>
+    return (
+      <ErrorState message={session.error ?? 'Erro ao carregar sessão de estudo.'}>
+        <Link to="/" className="btn btn--secondary">
+          Voltar para Home
+        </Link>
+      </ErrorState>
+    )
   }
 
   if (session.status !== 'pending' || !session.currentCard) {
@@ -106,12 +122,15 @@ function StudySessionView({ mode }: StudySessionViewProps) {
         />
       }
       extendedPanel={
-        <ExtendedPanel
-          description={extendedDescription}
-          isOpen={session.isExtendedOpen}
-          canShow={session.canShowExtended}
-          onToggle={session.toggleExtended}
-        />
+        session.canShowExtended ? (
+          <ExtendedPanel
+            description={extendedDescription}
+            isFlipped={session.isFlipped}
+            isOpen={session.isExtendedOpen}
+            canShow={session.canShowExtended}
+            onToggle={session.toggleExtended}
+          />
+        ) : null
       }
     />
   )
@@ -140,7 +159,7 @@ export function StudyPage() {
   }
 
   return (
-    <section className="study-page">
+    <section className="study-page" aria-label="Sessão de estudo">
       <StudySessionView mode={mode} />
     </section>
   )

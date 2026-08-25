@@ -26,11 +26,17 @@ export function StudyCard({ question, answer, isFlipped }: StudyCardProps) {
   return (
     <div className="study-card-container" aria-live="polite">
       <div className={`study-card-inner ${isFlipped ? 'study-card-inner--flipped' : ''}`}>
-        <div className="study-card-face study-card-face--front">
+        <div
+          className="study-card-face study-card-face--front"
+          aria-hidden={isFlipped}
+        >
           <p className="study-card__label">Pergunta</p>
           <p className="study-card__text">{question}</p>
         </div>
-        <div className="study-card-face study-card-face--back">
+        <div
+          className="study-card-face study-card-face--back"
+          aria-hidden={!isFlipped}
+        >
           <p className="study-card__label">Resposta</p>
           <p className="study-card__text">{answer}</p>
         </div>

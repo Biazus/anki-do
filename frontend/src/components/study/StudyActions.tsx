@@ -8,19 +8,28 @@ interface StudyActionsProps {
 
 export function StudyActions({ isFlipped, onFlip, onNext }: StudyActionsProps) {
   return (
-    <div className="study-actions">
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={onFlip}
-        disabled={isFlipped}
-        aria-label="Virar card"
-      >
-        Virar
-      </Button>
-      <Button type="button" onClick={onNext} aria-label="Próximo card">
-        Próxima
-      </Button>
+    <div className="study-actions" role="group" aria-label="Ações do card">
+      <p className="study-actions__hint">
+        Atalhos: Espaço ou F para virar, → ou N para próxima, Esc para sair.
+      </p>
+      <div className="study-actions__buttons">
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={onFlip}
+          disabled={isFlipped}
+          aria-label="Virar card e mostrar resposta"
+        >
+          Virar
+        </Button>
+        <Button
+          type="button"
+          onClick={onNext}
+          aria-label="Ir para o próximo card"
+        >
+          Próxima
+        </Button>
+      </div>
     </div>
   )
 }

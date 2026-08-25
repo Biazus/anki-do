@@ -5,6 +5,7 @@ import { fetchTopics } from '../api/topics'
 import { PageHeader } from '../components/layout/PageHeader'
 import { Button } from '../components/ui/Button'
 import { EmptyState } from '../components/ui/EmptyState'
+import { ErrorState } from '../components/ui/ErrorState'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import type { Topic } from '../types/topic'
 
@@ -20,34 +21,22 @@ export function HomePage() {
   const totalCards = useMemo(() => totalCardCount(topics), [topics])
   const canRandom = totalCards > 0
 
+  async function loadTopics() {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const data = await fetchTopics()
+      setTopics(data)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erro ao carregar tópicos.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    let cancelled = false
-
-    async function load() {
-      setLoading(true)
-      setError(null)
-
-      try {
-        const data = await fetchTopics()
-        if (!cancelled) {
-          setTopics(data)
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof ApiError ? err.message : 'Erro ao carregar tópicos.')
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false)
-        }
-      }
-    }
-
-    load()
-
-    return () => {
-      cancelled = true
-    }
+    loadTopics()
   }, [])
 
   return (
@@ -69,11 +58,18 @@ export function HomePage() {
 
         <div className="home-random">
           {canRandom ? (
-            <Link to="/study/random" className="btn btn--primary">
+            <Link
+              to="/study/random"
+              className="btn btn--primary"
+              aria-label={`Estudar ${totalCards} cards aleatórios de todos os tópicos`}
+            >
               Random
             </Link>
           ) : (
-            <Button disabled title="Cadastre cards para estudar em modo aleatório">
+            <Button
+              disabled
+              aria-label="Random indisponível: cadastre cards para estudar em modo aleatório"
+            >
               Random
             </Button>
           )}
@@ -86,7 +82,10 @@ export function HomePage() {
       </div>
 
       {loading ? <LoadingSpinner /> : null}
-      {error ? <p className="error-message">{error}</p> : null}
+
+      {error ? (
+        <ErrorState message={error} onRetry={loadTopics} />
+      ) : null}
 
       {!loading && !error && topics.length === 0 ? (
         <EmptyState
@@ -104,13 +103,14 @@ export function HomePage() {
           <h2 className="section-title">Tópicos</h2>
 
           {totalCards === 0 ? (
-            <p className="home-topics__hint">
-              Você tem tópicos, mas ainda sem cards.{' '}
-              <Link to="/cards/new" className="inline-link">
-                Cadastre o primeiro card
+            <EmptyState
+              title="Nenhum card cadastrado"
+              description="Crie cards para liberar o estudo por tópico e o modo Random."
+            >
+              <Link to="/cards/new" className="btn btn--primary">
+                Cadastrar card
               </Link>
-              .
-            </p>
+            </EmptyState>
           ) : null}
 
           <ul className="home-topic-list">
@@ -128,11 +128,18 @@ export function HomePage() {
                   </div>
 
                   {canStudy ? (
-                    <Link to={`/study/${topic.id}`} className="btn btn--secondary">
+                    <Link
+                      to={`/study/${topic.id}`}
+                      className="btn btn--secondary"
+                      aria-label={`Estudar tópico ${topic.name}`}
+                    >
                       Estudar
                     </Link>
                   ) : (
-                    <Button disabled title="Cadastre cards neste tópico para estudar">
+                    <Button
+                      disabled
+                      aria-label={`Estudar tópico ${topic.name} indisponível: sem cards`}
+                    >
                       Estudar
                     </Button>
                   )}

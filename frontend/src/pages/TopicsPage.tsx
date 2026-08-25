@@ -5,6 +5,7 @@ import { PageHeader } from '../components/layout/PageHeader'
 import { TopicForm } from '../components/topics/TopicForm'
 import { TopicList } from '../components/topics/TopicList'
 import { EmptyState } from '../components/ui/EmptyState'
+import { ErrorState } from '../components/ui/ErrorState'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import type { Topic } from '../types/topic'
 
@@ -50,7 +51,10 @@ export function TopicsPage() {
         <h2 className="section-title">Tópicos cadastrados</h2>
 
         {loading ? <LoadingSpinner /> : null}
-        {error ? <p className="error-message">{error}</p> : null}
+
+        {error ? (
+          <ErrorState message={error} onRetry={loadTopics} />
+        ) : null}
 
         {!loading && !error && topics.length === 0 ? (
           <EmptyState

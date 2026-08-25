@@ -156,7 +156,7 @@ export function CardForm({ topics }: CardFormProps) {
       {error ? <p className="error-message">{error}</p> : null}
       {success ? <p className="success-message">{success}</p> : null}
 
-      <Button type="submit" disabled={!canSubmit}>
+      <Button type="submit" disabled={!canSubmit} aria-label="Salvar novo card">
         {submitting ? 'Salvando...' : 'Criar card'}
       </Button>
     </form>
