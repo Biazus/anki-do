@@ -1,13 +1,17 @@
+import type { ReactNode } from 'react'
+
 interface EmptyStateProps {
   title: string
   description?: string
+  children?: ReactNode
 }
 
-export function EmptyState({ title, description }: EmptyStateProps) {
+export function EmptyState({ title, description, children }: EmptyStateProps) {
   return (
     <div className="empty-state">
       <p className="empty-state__title">{title}</p>
       {description ? <p className="empty-state__description">{description}</p> : null}
+      {children ? <div className="empty-state__action">{children}</div> : null}
     </div>
   )
 }
