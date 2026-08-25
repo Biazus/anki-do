@@ -1,12 +1,10 @@
-from sqlalchemy import text
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.routes import cards, health, topics
 from app.config import settings
-from app.database import engine
 
-app = FastAPI()
+app = FastAPI(title="anki-do API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,19 +14,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-def _check_db() -> str:
-    if not settings.database_url or engine is None:
-        return "not_configured"
-
-    try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
-        return "connected"
-    except Exception:
-        return "disconnected"
-
-
-@app.get("/health")
-def health():
-    return {"status": "ok", "db": _check_db()}
+app.include_router(health.router)
+app.include_router(topics.router, prefix="/topics", tags=["topics"])
+app.include_router(cards.router, prefix="/cards", tags=["cards"])
