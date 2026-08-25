@@ -26,13 +26,13 @@ Flashcards estilo Anki. Monorepo com backend FastAPI, frontend React/Vite e Post
    npm run dev
    ```
 
-   O Vite lê `VITE_API_URL` do `.env` na raiz do monorepo (`envDir: '..'`).
+   O Vite lê variáveis do `.env` na raiz do monorepo (`envDir: '..'`). A porta do dev server é `FRONTEND_PORT` (padrão 5173).
 
 ## URLs
 
 | Serviço  | URL                          | Como sobe        |
 | -------- | ---------------------------- | ---------------- |
-| Frontend | http://localhost:5173        | `npm run dev`    |
+| Frontend | http://localhost:5174        | `npm run dev`    |
 | Backend  | http://localhost:8001        | Docker Compose   |
 | Health   | http://localhost:8001/health | Docker Compose   |
 
