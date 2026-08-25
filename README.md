@@ -48,11 +48,32 @@ Abra **http://localhost:5174** (porta em `FRONTEND_PORT`).
 | `FRONTEND_PORT` | Porta do Vite | `5174` |
 | `VITE_API_URL` | URL da API (vazio = proxy no dev) | — |
 
-### Notas
+### Stack
 
-- Seed/fixtures automatizados ficam para uma versão futura.
-- Geração de perguntas e respostas por IA, com aprovação do usuário antes de criar o card, também está no roadmap.
-- Refresh na tela de estudo reinicia a sessão (comportamento aceito no MVP).
+- **Backend:** FastAPI, SQLAlchemy, Alembic, PostgreSQL
+- **Frontend:** React, Vite, TypeScript, React Router
+- **Infra:** Docker Compose (dev local)
+
+### MVP (limitações atuais)
+
+- Sem autenticação
+- Sem editar/excluir tópicos e cards
+- Sessão de estudo não persiste (refresh reinicia)
+- Otimizado para menos de 200 cards por sessão
+
+### Roadmap (escopo futuro)
+
+- Autenticação
+- Editar/excluir tópicos e cards
+- Spaced repetition (SM-2)
+- Rodadas com cards pulados que voltam
+- Persistência de sessão (ex.: `localStorage`)
+- Seed/fixtures automatizados
+- Geração de perguntas e respostas por IA, com aprovação do usuário antes de criar o card
+- Paginação de cards
+- Testes automatizados (E2E/unit)
+- Deploy em produção (CI/CD, nginx)
+- Busca/filtro de tópicos
 
 ---
 
@@ -97,8 +118,29 @@ Open **http://localhost:5174** (port from `FRONTEND_PORT`).
 | `FRONTEND_PORT` | Vite dev server port | `5174` |
 | `VITE_API_URL` | API URL (empty = dev proxy) | — |
 
-### Notes
+### Stack
 
-- Automated seed/fixtures are planned for a future version.
-- AI-generated questions and answers, with user approval before creating a card, are also on the roadmap.
-- Refreshing the study page restarts the session (accepted MVP behavior).
+- **Backend:** FastAPI, SQLAlchemy, Alembic, PostgreSQL
+- **Frontend:** React, Vite, TypeScript, React Router
+- **Infra:** Docker Compose (local dev)
+
+### MVP (current limitations)
+
+- No authentication
+- No edit/delete for topics and cards
+- Study session does not persist (refresh restarts it)
+- Optimized for under 200 cards per session
+
+### Roadmap (future scope)
+
+- Authentication
+- Edit/delete topics and cards
+- Spaced repetition (SM-2)
+- Rounds with skipped cards returning later
+- Session persistence (e.g. `localStorage`)
+- Automated seed/fixtures
+- AI-generated questions and answers, with user approval before creating a card
+- Card pagination
+- Automated tests (E2E/unit)
+- Production deploy (CI/CD, nginx)
+- Topic search/filter
