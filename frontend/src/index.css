@@ -9,6 +9,14 @@
   --error: #b91c1c;
   --error-bg: #fef2f2;
 
+  --card-front-bg: #fff8e7;
+  --card-back-bg: #e8f4fd;
+  --card-border: #d4a574;
+  --card-shadow: 0 8px 24px rgba(180, 120, 60, 0.18);
+  --card-label-front: #92400e;
+  --card-label-back: #1e40af;
+  --card-area-bg: #f3f4f6;
+
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -158,19 +166,11 @@ a {
   border-radius: 0.75rem;
 }
 
-.home-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
 .home-random {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
-  padding-top: 0.25rem;
-  border-top: 1px solid var(--border);
 }
 
 .home-random__hint {
@@ -466,28 +466,34 @@ a {
   align-items: start;
 }
 
-.study-layout__body--single {
-  grid-template-columns: 1fr;
-}
-
 .study-layout__sidebar {
   min-width: 0;
+  position: sticky;
+  top: 1rem;
 }
 
 .study-layout__main {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.25rem;
 }
 
 .study-layout__card-area {
-  min-height: 280px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  background: var(--card-area-bg);
+  border-radius: 1rem;
 }
 
 .study-actions {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
+  max-width: 240px;
 }
 
 .study-actions__hint {
@@ -504,13 +510,16 @@ a {
 .study-card-container {
   perspective: 1000px;
   width: 100%;
-  min-height: 280px;
+  max-width: 240px;
+  aspect-ratio: 3 / 4;
+  filter: drop-shadow(0 8px 24px rgba(180, 120, 60, 0.18));
 }
 
 .study-card-inner {
   position: relative;
   width: 100%;
-  min-height: 280px;
+  height: 100%;
+  min-height: 320px;
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
 }
@@ -524,30 +533,55 @@ a {
   inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 2px solid var(--card-border);
+  border-radius: 1rem;
   backface-visibility: hidden;
   overflow: auto;
+  box-shadow: var(--card-shadow);
+}
+
+.study-card-face--front {
+  background: var(--card-front-bg);
+}
+
+.study-card-face--front .study-card__label {
+  color: var(--card-label-front);
 }
 
 .study-card-face--back {
   transform: rotateY(180deg);
+  background: var(--card-back-bg);
+}
+
+.study-card-face--back .study-card__label {
+  color: var(--card-label-back);
 }
 
 .study-card--fade {
-  min-height: 280px;
-  padding: 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  transition: opacity 0.3s ease;
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 3 / 4;
+  min-height: 320px;
+  padding: 1.25rem;
+  background: var(--card-front-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+.study-card--fade .study-card__label {
+  color: var(--card-label-front);
 }
 
 .study-card--fade-flipped {
-  opacity: 1;
+  background: var(--card-back-bg);
+}
+
+.study-card--fade-flipped .study-card__label {
+  color: var(--card-label-back);
 }
 
 .study-card__content {
@@ -565,8 +599,8 @@ a {
 }
 
 .study-card__text {
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.5;
   color: var(--text-h);
   white-space: pre-wrap;
   word-break: break-word;
@@ -594,6 +628,12 @@ a {
   word-break: break-word;
 }
 
+.extended-panel__empty {
+  margin: 0;
+  color: var(--text);
+  font-style: italic;
+}
+
 @media (max-width: 768px) {
   .app-main {
     padding: 1.25rem 1rem;
@@ -605,6 +645,7 @@ a {
 
   .study-layout__sidebar {
     order: 1;
+    position: static;
   }
 
   .study-layout__main {

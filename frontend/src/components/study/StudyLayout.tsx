@@ -36,20 +36,12 @@ export function StudyLayout({
         </div>
       </header>
 
-      <div
-        className={
-          extendedPanel
-            ? 'study-layout__body'
-            : 'study-layout__body study-layout__body--single'
-        }
-      >
+      <div className="study-layout__body">
         <div className="study-layout__main">
           <div className="study-layout__card-area">{card}</div>
           {actions}
         </div>
-        {extendedPanel ? (
-          <div className="study-layout__sidebar">{extendedPanel}</div>
-        ) : null}
+        <div className="study-layout__sidebar">{extendedPanel}</div>
       </div>
     </div>
   )

@@ -109,18 +109,21 @@ export function useStudySession({
     totalCards > 0 ? `${currentIndex + 1} / ${totalCards}` : '0 / 0'
 
   const flip = useCallback(() => {
-    setIsFlipped(true)
+    setIsFlipped((flipped) => {
+      if (flipped) {
+        setIsExtendedOpen(false)
+      }
+      return !flipped
+    })
   }, [])
 
   const toggleExtended = useCallback(() => {
-    const card = queueRef.current[currentIndex]
-
-    if (!isFlipped || !hasExtendedDescription(card)) {
+    if (!isFlipped) {
       return
     }
 
     setIsExtendedOpen((open) => !open)
-  }, [currentIndex, isFlipped])
+  }, [isFlipped])
 
   const next = useCallback(() => {
     const nextIndex = currentIndex + 1

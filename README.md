@@ -1,49 +1,104 @@
 # anki-do
 
-Flashcards estilo Anki. Monorepo com backend FastAPI, frontend React/Vite e PostgreSQL.
+Flashcards estilo Anki · Anki-style flashcards.
 
-## Setup local
+- [Português](#portugues)
+- [English](#english)
 
-1. Copie as variáveis de ambiente:
+---
 
-   ```bash
-   cp .env.example .env
-   ```
+<a id="portugues"></a>
 
-2. Suba o banco e o backend com Docker Compose:
+## Português
 
-   ```bash
-   docker compose up --build
-   ```
-
-   Postgres expõe a porta **5433** no host; o backend expõe **8001**. Ajuste via `POSTGRES_PORT` e `BACKEND_PORT` no `.env`.
-
-3. Em outro terminal, rode o frontend localmente:
-
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-   O Vite lê variáveis do `.env` na raiz do monorepo (`envDir: '..'`). A porta do dev server é `FRONTEND_PORT` (padrão 5173).
-
-## URLs
-
-| Serviço  | URL                          | Como sobe        |
-| -------- | ---------------------------- | ---------------- |
-| Frontend | http://localhost:5174        | `npm run dev`    |
-| Backend  | http://localhost:8001        | Docker Compose   |
-| Health   | http://localhost:8001/health | Docker Compose   |
-
-## Health check
+### Início rápido
 
 ```bash
-curl http://localhost:8001/health
+cp .env.example .env
+docker compose up --build -d
+docker compose exec backend alembic upgrade head
+cd frontend && npm install && npm run dev
 ```
 
-Resposta esperada:
+Abra **http://localhost:5174** (porta em `FRONTEND_PORT`).
 
-```json
-{"status": "ok", "db": "connected"}
+| Serviço  | URL |
+| -------- | --- |
+| Frontend | http://localhost:5174 |
+| Backend  | http://localhost:8001 |
+| Health   | http://localhost:8001/health |
+
+### Smoke test
+
+1. **Tópicos** → criar um tópico (ex.: `Python`)
+2. **Novo Card** → cadastrar pergunta e resposta
+3. **Home** → **Estudar** no tópico
+4. Virar o card → **Mostrar detalhes** (se houver) → **Próxima**
+5. **Sair** ou esgotar os cards
+6. **Random** na Home → estudar cards de todos os tópicos
+
+### Variáveis de ambiente
+
+| Variável | Descrição | Padrão |
+| -------- | --------- | ------ |
+| `POSTGRES_*` | Credenciais e porta do Postgres | ver `.env.example` |
+| `BACKEND_PORT` | Porta do API no host | `8001` |
+| `DATABASE_URL` | Conexão local (fora do Docker) | — |
+| `CORS_ORIGINS` | Origens permitidas | `http://localhost:5174` |
+| `FRONTEND_PORT` | Porta do Vite | `5174` |
+| `VITE_API_URL` | URL da API (vazio = proxy no dev) | — |
+
+### Notas
+
+- Seed/fixtures automatizados ficam para uma versão futura.
+- Geração de perguntas e respostas por IA, com aprovação do usuário antes de criar o card, também está no roadmap.
+- Refresh na tela de estudo reinicia a sessão (comportamento aceito no MVP).
+
+---
+
+<a id="english"></a>
+
+## English
+
+### Quick start
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+docker compose exec backend alembic upgrade head
+cd frontend && npm install && npm run dev
 ```
+
+Open **http://localhost:5174** (port from `FRONTEND_PORT`).
+
+| Service  | URL |
+| -------- | --- |
+| Frontend | http://localhost:5174 |
+| Backend  | http://localhost:8001 |
+| Health   | http://localhost:8001/health |
+
+### Smoke test
+
+1. **Topics** → create a topic (e.g. `Python`)
+2. **New Card** → add question and answer
+3. **Home** → **Study** on the topic
+4. Flip the card → **Show details** (if any) → **Next**
+5. **Exit** or finish all cards
+6. **Random** on Home → study cards from all topics
+
+### Environment variables
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| `POSTGRES_*` | Postgres credentials and port | see `.env.example` |
+| `BACKEND_PORT` | API port on host | `8001` |
+| `DATABASE_URL` | Local connection (outside Docker) | — |
+| `CORS_ORIGINS` | Allowed origins | `http://localhost:5174` |
+| `FRONTEND_PORT` | Vite dev server port | `5174` |
+| `VITE_API_URL` | API URL (empty = dev proxy) | — |
+
+### Notes
+
+- Automated seed/fixtures are planned for a future version.
+- AI-generated questions and answers, with user approval before creating a card, are also on the roadmap.
+- Refreshing the study page restarts the session (accepted MVP behavior).

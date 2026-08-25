@@ -47,15 +47,6 @@ export function HomePage() {
       />
 
       <div className="home-actions">
-        <nav className="home-links" aria-label="Atalhos">
-          <Link to="/topics" className="inline-link">
-            Gerenciar tópicos
-          </Link>
-          <Link to="/cards/new" className="inline-link">
-            Novo card
-          </Link>
-        </nav>
-
         <div className="home-random">
           {canRandom ? (
             <Link

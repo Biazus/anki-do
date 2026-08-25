@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 
 interface UseStudyKeyboardOptions {
   enabled: boolean
-  isFlipped: boolean
   onFlip: () => void
   onNext: () => void
   onExit: () => void
@@ -24,7 +23,6 @@ function isTypingTarget(target: EventTarget | null): boolean {
 
 export function useStudyKeyboard({
   enabled,
-  isFlipped,
   onFlip,
   onNext,
   onExit,
@@ -51,7 +49,7 @@ export function useStudyKeyboard({
         return
       }
 
-      if (!isFlipped && (event.key === ' ' || event.key === 'f' || event.key === 'F')) {
+      if (event.key === ' ' || event.key === 'f' || event.key === 'F') {
         event.preventDefault()
         onFlip()
       }
@@ -62,5 +60,5 @@ export function useStudyKeyboard({
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [enabled, isFlipped, onFlip, onNext, onExit])
+  }, [enabled, onFlip, onNext, onExit])
 }

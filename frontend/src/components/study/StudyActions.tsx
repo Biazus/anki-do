@@ -17,8 +17,7 @@ export function StudyActions({ isFlipped, onFlip, onNext }: StudyActionsProps) {
           type="button"
           variant="secondary"
           onClick={onFlip}
-          disabled={isFlipped}
-          aria-label="Virar card e mostrar resposta"
+          aria-label={isFlipped ? 'Virar card e mostrar pergunta' : 'Virar card e mostrar resposta'}
         >
           Virar
         </Button>

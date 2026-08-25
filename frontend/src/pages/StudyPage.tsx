@@ -36,7 +36,6 @@ function StudySessionView({ mode }: StudySessionViewProps) {
 
   useStudyKeyboard({
     enabled: session.status === 'pending',
-    isFlipped: session.isFlipped,
     onFlip: session.flip,
     onNext: session.next,
     onExit: session.exit,
@@ -122,15 +121,13 @@ function StudySessionView({ mode }: StudySessionViewProps) {
         />
       }
       extendedPanel={
-        session.canShowExtended ? (
-          <ExtendedPanel
-            description={extendedDescription}
-            isFlipped={session.isFlipped}
-            isOpen={session.isExtendedOpen}
-            canShow={session.canShowExtended}
-            onToggle={session.toggleExtended}
-          />
-        ) : null
+        <ExtendedPanel
+          description={extendedDescription}
+          hasExtended={session.hasExtended}
+          isFlipped={session.isFlipped}
+          isOpen={session.isExtendedOpen}
+          onToggle={session.toggleExtended}
+        />
       }
     />
   )
