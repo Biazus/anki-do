@@ -1,20 +1,16 @@
-import os
+from sqlalchemy import text
 
-import psycopg
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from app.config import settings
+from app.database import engine
 
-cors_origins = [
-    origin.strip()
-    for origin in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
-    if origin.strip()
-]
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -22,15 +18,12 @@ app.add_middleware(
 
 
 def _check_db() -> str:
-    database_url = os.getenv("DATABASE_URL")
-    if not database_url:
+    if not settings.database_url or engine is None:
         return "not_configured"
 
-    psycopg_url = database_url.replace("postgresql+psycopg://", "postgresql://")
-
     try:
-        with psycopg.connect(psycopg_url, connect_timeout=3) as conn:
-            conn.execute("SELECT 1")
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
         return "connected"
     except Exception:
         return "disconnected"
